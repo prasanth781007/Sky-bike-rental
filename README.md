@@ -16,7 +16,7 @@
     <link rel="stylesheet" href="footer.css"> 
       
     
-      <h1 class="ft">WELCOME TO SKY BIKE</h1>
+      
    
       <script src="skybike.js"></script>
       
