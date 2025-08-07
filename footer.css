@@ -1,0 +1,166 @@
+
+.sub{
+    text-align: center;
+    padding: 20px;
+    background-color: #007BFF; /* Blue background */
+    border-radius: 10px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+}
+
+.info {
+    font-size: 14px;
+    margin-bottom: 20px;
+}
+
+h2 {
+    font-size: 24px;
+    margin-bottom: 10px;
+}
+
+.subscribe-form {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.subscribe-form input {
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    margin-right: 10px;
+}
+
+.subscribe-form button {
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    background-color: #0056b3; /* Darker blue for button */
+    color: white;
+    cursor: pointer;
+}
+
+.subscribe-form button:hover {
+    background-color: #004494; /* Even darker blue on hover */
+}
+
+
+
+.quick{  margin-top:15px;
+  color:white;
+  margin-left:5px;
+}
+.quick1{  margin-top:15px;
+  color:white;
+  font-size:20px;
+  margin-left:5px;
+}
+.text-white
+{
+
+  text-decoration:none; 
+  
+  margin-top:10px;
+  color:white;
+  margin-left:5px;
+}
+
+.text-white
+{
+  margin-top:30px;
+  color:white;
+  font-size:20px;
+  margin-left:5px;
+}
+.aboutsky
+{
+  margin-top:30px;
+  color:white;
+  font-size:30px;
+  margin-left:5px;
+}
+.s
+{
+background-color:grey;
+ width:auto;
+ height:auto;
+  border-radius:10px 0px;
+}
+.aboutunder
+{
+  margin-top:30px;
+  margin-bottom:30px;
+  font-size:20px;
+  color:white;
+  margin-left:10px;
+}
+.text-blue{text-decoration:none; 
+  font-size:35px;
+  margin-top:10px;
+  margin-left:40px;
+  color:blue;}
+
+.social-menu {
+      position: relative;
+      width: 280px;
+      height: 350px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .social-menu .share-button {
+      position: relative;
+      height: 60px;
+      width: 60px;
+      background: #fff;
+      border-radius: 50%;
+      box-shadow: 0 3px 4px rgba(0, 0, 0, 0.15);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #333;
+      font-size: 2rem;
+      cursor: pointer;
+      transition: 1.25s;
+      z-index: 5;
+    }
+    .social-menu .is-active .share-button {
+      transform: rotate(360deg);
+      box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15),
+        0 0 0 2px #333,
+        0 0 0 8px #fff;
+      
+    }
+    .social-menu li {
+      position: absolute;
+      left: 0;
+      list-style: none;
+      transition: 0.7s;
+      transform: rotate(calc(360deg / 8 * var(--i)));
+      transform-origin: 140px;
+      scale: 0;
+      transition-delay: calc(0.2s * var(--i));
+    }
+    .social-menu.is-active li {
+      scale: 1;
+    }
+    .social-menu li a {
+      position: relative;
+      display: flex;
+      transform: rotate(calc(360deg / 8 * var(--i)));
+      width: 60px;
+      height: 60px;
+      background-color: #FFF;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      font-size: 1.75rem;
+      color: var(--clr);
+      box-shadow: 0 3px 4px rgba(0, 0, 0, 0.15);
+      transition: 0.4s;
+    }
+    .social-menu li:hover a {
+      font-size: 2.5rem;
+      box-shadow: 0 0 0 2px var(--clr),
+        0 0 0 6px #fff;
+    }

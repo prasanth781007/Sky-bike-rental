@@ -1,0 +1,469 @@
+body {
+    padding:0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+
+    /* For smooth number animation easing */
+    .stat-icon {
+      width: 48px;
+      height: 48px;
+      fill: #f97316; /* orange-500 in Tailwind */
+      transition: transform 0.5s ease;
+      will-change: transform;
+    }
+    .stat-icon.animate {
+      animation: pulseBounce 1s ease forwards;
+    }
+    @keyframes pulseBounce {
+      0% { transform: scale(1) translateY(0); }
+      50% { transform: scale(1.2) translateY(-10px); }
+      100% { transform: scale(1) translateY(0); }
+    }
+/*img selction */
+
+.textselect{font-size:15px
+    
+}
+.imgselection{width:150px;height:150px;border-radius:40px;}
+.boxselet{
+    
+    width:300px;
+    height: 150px;
+    
+    background:white;
+    border-radius:40px ;
+flex-wrap: flex;
+    margin-top: 25px;
+    margin-bottom: 25px;
+    margin-left: 0px;
+    margin-right: 0px;
+    
+}   
+
+.quick-booking-card2{
+    background-color:#E0E0E0;
+    align-items:center;
+    font-size: 1.8em;
+    
+    margin:50px;
+    text-align: left;
+     flex-wrap: flex;
+    flex-direction: column;
+       display: flex;
+    
+}
+
+/*img selction */
+.c {
+    background-color: #fff;
+    border-radius: 20px; /* Rounded corners for the card */
+    padding: 30px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width:100%; /* Adjust max-width as needed */
+    box-sizing: border-box;
+}
+
+.headingquickboooking{
+    font-size: 1.8em;
+    color: #333;
+    margin-bottom: 25px;
+    text-align:center;
+    background-color:#ff5722;
+    opacity: 70%;
+}
+.quickbox{height:auto;wight:auto;background-color:white;}
+
+.form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr; /* Two columns */
+    gap: 20px; /* Space between grid items */
+    margin-bottom: 30px;
+}
+
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+}
+.form-group1{
+    display: flex;
+    flex-direction: column;
+    margin:20px;
+}
+
+.form-group label {
+    font-size: 0.9em;
+    color: #555;
+    margin-bottom: 8px;
+    font-weight: 500;
+}
+
+.input-container {
+    position: relative;
+    width: 100%;
+}
+
+.input-container input,
+.input-container select {
+    width: 100%;
+    padding: 12px 40px 12px 15px; /* Adjust padding for icon and arrow */
+    border: 1px solid #ddd;
+    border-radius: 8px; /* Slightly rounded input fields */
+    font-size: 1em;
+    color: #333;
+    background-color: #f8f8f8; /* Light background for inputs */
+    appearance: none; /* Remove default arrow for select */
+    -webkit-appearance: none; /* For Safari */
+    -moz-appearance: none; /* For Firefox */
+    box-sizing: border-box; /* Include padding and border in the element's total width and height */
+    cursor: pointer; /* Indicate interactivity */
+}
+
+.input-container input:focus,
+.input-container select:focus {
+    outline: none;
+    border-color: #ff5722; /* Highlight on focus */
+    box-shadow: 0 0 0 2px rgba(255, 87, 34, 0.2);
+}
+
+/* Styling for the icons inside the input fields */
+.input-container .icon {
+    position: absolute;
+    left: 15px; /* Position the icon inside */
+    top: 50%;
+    transform: translateY(-50%);
+    color: #999;
+    font-size: 1.2em; /* Adjust icon size */
+    pointer-events: none; /* Allow clicks to pass through to the input */
+}
+
+/* Adjust padding for input text to make space for the icon */
+.input-container input {
+    padding-left: 40px; /* Make space for the icon */
+}
+
+/* Styling for the custom dropdown arrow */
+.input-container .arrow-down {
+    position: absolute;
+    right: 15px; /* Position the arrow */
+    top: 50%;
+    transform: translateY(-50%) rotate(45deg); /* Create a simple triangle */
+    width: 8px;
+    height: 8px;
+    border-right: 2px solid #666;
+    border-bottom: 2px solid #666;
+    pointer-events: none; /* Allow clicks to pass through */
+}
+
+/* Specific styling for the select arrow, if different needed */
+.input-container .select-arrow {
+    border-right: 2px solid #666; /* Match input arrow style */
+    border-bottom: 2px solid #666;
+}
+
+
+.check-availability-btn {
+    width: 100%;
+    padding: 15px 20px;
+    background-color: #ff5722; /* Orange color */
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    font-size: 1.1em;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.check-availability-btn:hover {
+    background-color: #e64a19; /* Darker orange on hover */
+}
+
+/* Responsive adjustments */
+@media (max-width: 600px) {
+    .form-grid {
+        grid-template-columns: 1fr; /* Stack columns on smaller screens */
+    }
+    .quick-booking-card {
+        margin: 20px;
+        padding: 20px;
+    }
+}
+
+
+    /* Rotate layout - vertical column but rotated 90deg */
+    .rotated-wrapper {
+      display: flex;
+      flex-direction: row;
+      width: 100vw;
+      height: 100vh;
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+      scroll-behavior: smooth;
+      background: #f9fafb;
+    }
+    .panel {
+      scroll-snap-align: start;
+      flex: 0 0 33.3333vw;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 3rem 2rem;
+      border-left: 1px solid #e5e7eb;
+      box-sizing: border-box;
+      transform-origin: center center;
+      /* rotate each panel -90deg to come back readable */
+      transform: rotate(-90deg);
+      background: white;
+    }
+    .panel h2 {
+      font-weight: 700;
+      margin-bottom: 1rem;
+      font-size: 1.5rem;
+      color: #111827;
+    }
+    .step-item, .feature-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 1rem;
+      margin-bottom: 1.75rem;
+      max-width: 280px;
+        
+    }
+    .icon-wrapper {
+      flex-shrink: 0;
+      width: 36px;
+      height: 36px;
+      background-color: #3b82f6;
+      border-radius: 0.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-weight: 700;
+      font-size: 1.25rem;
+      user-select: none;
+    }
+    .step-text, .feature-text {
+      font-size: 1rem;
+      color: #374151;
+      line-height: 1.4;
+    }
+    .subtext {
+      font-size: 0.875rem;
+      color: #6b7280;
+      margin-top: 0.25rem;
+    }
+    /* Icons: simple line for quick look, we will use inline SVG icons with stroke and fill */
+    .icon-small svg {
+      width: 28px;
+      height: 28px;
+      stroke: #2563eb;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      fill: none;
+    }
+    .feature-icon svg {
+      width: 36px;
+      height: 36px;
+      stroke-width: 1.5;
+      stroke: #2563eb;
+      fill: none;
+    }
+    /* Scrollbar style for horizontal scroll */
+    .rotated-wrapper::-webkit-scrollbar {
+      height: 12px;
+    }
+    .rotated-wrapper::-webkit-scrollbar-track {
+      background: #e5e7eb;
+    }
+    .rotated-wrapper::-webkit-scrollbar-thumb {
+      background-color: #3b82f6;
+      border-radius: 6px;
+      border: 3px solid #e5e7eb;
+    }
+    /* Responsive - On small screens, stack panels vertically and remove rotation */
+    @media (max-width: 768px) {
+      .rotated-wrapper {
+        flex-direction: column;
+        overflow-x: visible;
+        overflow-y: auto;
+        height: auto;
+      }
+      .panel {
+        transform: none;
+        flex: none;
+        width: 100%;
+        height: auto;
+        border-left: none;
+        border-bottom: 1px solid #e5e7eb;
+        padding: 2.5rem 1.5rem;
+      }
+    }
+
+
+    .place{
+      width:auto;
+      margin: 2rem auto;
+      padding: 0 1rem;
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+      gap: 2rem;
+      flex-wrap:wrap;
+        text-wrap:wrap;
+      align-items: start;
+    }
+
+    /* Heading vertical on right side on larger screens, horizontal on mobile */
+    .hedingplace{
+      writing-mode: vertical-rl;
+      text-orientation: mixed;
+      font-weight: 700;
+      font-size: 1.75rem;
+      letter-spacing: 0.075em;
+      user-select: none;
+      margin: 0;
+        
+      padding: 0.25rem 0.75rem;
+      border-left: 4px solid #22b8cf;
+      color: #0f4c75;
+      flex-shrink: 0;
+      white-space: nowrap;
+    }
+
+    /* On small screens, horizontal header on top */
+    
+      .hedingplace{
+        writing-mode: horizontal-tb;
+        border-left: none;
+        border-bottom: 4px solid #22b8cf;
+        margin-bottom: 1rem;
+      }
+    }
+
+    /* Tabs container */
+    .tabs {
+      display: flex;
+      flex-direction: row;
+      gap: 1rem;
+      margin-bottom: 2rem;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    /* Each tab styling */
+    .tab {
+      background: white;
+      box-shadow: 0 2px 6px rgb(0 0 0 / 0.07);
+      border-radius: 8px;
+      padding: 0.5rem 1.25rem;
+      cursor: pointer;
+      font-weight: 600;
+      color: #444;
+      transition: all 0.3s ease;
+      border-bottom: 4px solid transparent;
+      user-select: none;
+      min-width: 100px;
+      text-align: center;
+    }
+
+    .tab.active {
+      border-bottom-color: #22b8cf;
+      color: #0f4c75;
+      box-shadow: 0 4px 12px rgb(34 184 207 / 0.3);
+      font-weight: 700;
+    }
+
+    /* City list grid */
+    .city-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+      gap: 2rem;
+      justify-items: center;
+      flex: 1;
+      padding-bottom: 2rem;
+    }
+
+    /* City circle image with animation */
+    .city-card {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.5rem;
+      transition: transform 0.35s ease, box-shadow 0.35s ease;
+    }
+
+    .city-image {
+      border-radius: 50%;
+      width: 110px;
+      height: 110px;
+      overflow: hidden;
+      box-shadow: 0 4px 12px rgb(0 0 0 / 0.12);
+      cursor: pointer;
+      position: relative;
+      background: linear-gradient(135deg, #22b8cf 0%, #117a8b 100%);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      will-change: transform;
+      transform-style: preserve-3d;
+      perspective: 800px;
+      transition: transform 0.5s cubic-bezier(0.25, 1, 0.5, 1);
+    }
+
+    .city-image img {
+      width: 110px;
+      height: 110px;
+      object-fit: cover;
+      border-radius: 50%;
+      backface-visibility: hidden;
+      transition: filter 0.3s ease;
+      display: block;
+    }
+
+    /* Animate scale and rotation on hover */
+    .city-image:hover {
+      animation: floatAround 3s ease-in-out infinite;
+      box-shadow: 0 8px 20px rgb(34 184 207 / 0.5);
+      transform: translateZ(20px) scale(1.1) rotateY(8deg) rotateX(8deg);
+      z-index: 10;
+    }
+
+    .city-image:hover img {
+      filter: brightness(1.1);
+    }
+
+    /* City name text */
+    .city-name {
+      font-size: 1rem;
+      color: #222;
+      font-weight: 600;
+      user-select: none;
+      text-align: center;
+    }
+
+    /* Floating animation */
+    @keyframes floatAround {
+      0% {
+        transform: translateZ(0) translateY(0) rotate(0deg);
+      }
+
+      33% {
+        transform: translateZ(10px) translateY(-5px) rotate(4deg);
+      }
+
+      66% {
+        transform: translateZ(20px) translateY(3px) rotate(-4deg);
+      }
+
+      100% {
+        transform: translateZ(0) translateY(0) rotate(0deg);
+      }
+    }

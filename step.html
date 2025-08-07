@@ -1,0 +1,945 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Book Your Ride</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+     <link rel="stylesheet" href="css bike.css">
+  <style>
+    /* Custom scrollbar for bike list */
+    .scrollbar-thin::-webkit-scrollbar {
+      height: 6px;
+    }
+
+    .scrollbar-thin::-webkit-scrollbar-track {
+      background: transparent;
+    }
+
+    .scrollbar-thin::-webkit-scrollbar-thumb {
+      background-color: #fb6700;
+      border-radius: 3px;
+    }
+
+    /* Hide native datepicker icon for consistency */
+    input[type="date"]::-webkit-calendar-picker-indicator {
+      filter: invert(40%) sepia(83%) saturate(5785%) hue-rotate(357deg) brightness(99%) contrast(104%);
+      cursor: pointer;
+    }
+
+    /* Hide native time picker icon */
+    input[type="time"]::-webkit-calendar-picker-indicator {
+      filter: invert(40%) sepia(83%) saturate(5785%) hue-rotate(357deg) brightness(99%) contrast(104%);
+      cursor: pointer;
+    }
+
+    /* Custom radio/checkbox styles */
+    .custom-checkbox input[type="checkbox"],
+    .custom-radio input[type="radio"] {
+      appearance: none;
+      -webkit-appearance: none;
+      -moz-appearance: none;
+      background-color: #fff;
+      border: 2px solid #bbb;
+      border-radius: 0.25rem;
+      width: 1.25rem;
+      height: 1.25rem;
+      cursor: pointer;
+      position: relative;
+      transition: all 0.2s ease-in-out;
+      margin-right: 0.5rem;
+    }
+
+    .custom-checkbox input[type="checkbox"]:checked {
+      background-color: #fb6700;
+      border-color: #fb6700;
+      background-image: url("data:image/svg+xml,%3csvg viewBox='0 0 16 16' fill='none' stroke='%23fff' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' xmlns='http://www.w3.org/2000/svg'%3e%3cpath d='M4 8l3 3 5-5'/%3e%3c/svg%3e");
+      background-repeat: no-repeat;
+      background-position: center;
+    }
+
+    .custom-radio input[type="radio"] {
+      border-radius: 9999px;
+    }
+
+    .custom-radio input[type="radio"]:checked {
+      background-color: #fb6700;
+      border-color: #fb6700;
+      background-image: radial-gradient(circle at center, #fff 50%, transparent 51%);
+      background-repeat: no-repeat;
+      background-position: center;
+    }
+
+    /* Progress circles */
+    .circle {
+      width: 1.75rem;
+      height: 1.75rem;
+      font-size: 1rem;
+      font-weight: 600;
+      border-radius: 9999px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .circle.active {
+      background-color: #fb6700;
+      color: white;
+    }
+
+    .circle.completed {
+      background-color: #11b981; /* emerald-500 Tailwind */
+      color: white;
+    }
+
+    /* Scroll container to avoid page scroll */
+    .step-content {
+      max-height: 60vh;
+      overflow-y: auto;
+      scrollbar-width: thin;
+      scrollbar-color: #fb6700 transparent;
+    }
+
+    /* Disabled button style */
+    button:disabled {
+      background-color: #fbbf24;
+      cursor: not-allowed;
+      box-shadow: none;
+      opacity: 0.7;
+    }
+  </style>
+</head>
+
+<body class="bg-gray-50 flex flex-col max-w-md mx-auto min-h-screen font-sans text-gray-900">
+  <!-- Header -->
+  <header class="flex items-center border-b border-gray-200 py-3 px-4 sticky top-0 bg-white z-10">
+    <button id="btn-back" aria-label="Go Back" class="pr-4 text-2xl select-none focus:outline-none hover:text-orange-600">
+      ←
+    </button>
+    <h1 class="flex-grow text-center text-xl font-semibold">Book Your Ride</h1>
+    <div id="step-counter" class="text-sm text-gray-600 font-semibold select-none">Step 1/5</div>
+  </header>
+
+  <!-- Progress bar -->
+  <div class="relative">
+    <div class="h-1 bg-orange-500 transition-all duration-300" id="progress-bar" style="width: 20%;"></div>
+  </div>
+
+  <!-- Main content -->
+  <main class="flex-grow px-4 pb-6 pt-3 overflow-hidden">
+
+    <!-- Progress Circles & Step Numbers -->
+    <nav class="flex gap-3 mb-4 select-none" aria-label="Progress steps" id="progress-nav">
+      <!-- Circles will be appended here by JS -->
+    </nav>
+
+    <!-- Step 1: Select Your Bike -->
+    <section class="step" data-step="1" aria-label="Select Your Bike" tabindex="0">
+
+      <h2 class="text-2xl font-semibold mb-4">Select Your Bike</h2>
+      <div id="bike-list"
+        class="flex flex-col gap-3 scrollbar-thin overscroll-contain overflow-y-auto max-h-[48vh] -mx-4 px-4">
+        <!-- Bikes list -->
+      </div>
+
+      <div class="mt-6 flex justify-end">
+        <button id="next-btn-1" class="bg-orange-500 hover:bg-orange-600 text-white px-6 py-3 rounded-lg font-semibold select-none"
+          disabled>Next Step</button>
+      </div>
+    </section>
+                        <center> <button  type="submit"    class="custom-btn btn-11" style="margin:20px; width:auto;" ><a style="font-decoration:none;" href="booking.html">BOOk section</a><div class="dot"></div></button></center>
+              
+
+    <!-- Step 2: Select Dates & Times -->
+    <section class="step hidden" data-step="2" aria-label="Select Dates and Times" tabindex="0">
+      <h2 class="text-2xl font-semibold mb-6">Select Dates &amp; Times</h2>
+
+      <form id="dates-form" class="space-y-6">
+        <div>
+          <label for="pickup-date" class="block mb-1 font-medium">Pick-up Date</label>
+          <input type="date" id="pickup-date" required
+            class="w-full border border-gray-300 rounded-lg px-4 py-3 text-lg text-gray-900 focus:border-orange-500 focus:ring-1 focus:ring-orange-500" />
+        </div>
+        <div>
+          <label for="pickup-time" class="block mb-1 font-medium">Pick-up Time</label>
+          <input type="time" id="pickup-time" required
+            class="w-full border border-gray-300 rounded-lg px-4 py-3 text-lg text-gray-900 focus:border-orange-500 focus:ring-1 focus:ring-orange-500" />
+        </div>
+        <div>
+          <label for="return-date" class="block mb-1 font-medium">Return Date</label>
+          <input type="date" id="return-date" required
+            class="w-full border border-gray-300 rounded-lg px-4 py-3 text-lg text-gray-900 focus:border-orange-500 focus:ring-1 focus:ring-orange-500" />
+        </div>
+        <div>
+          <label for="return-time" class="block mb-1 font-medium">Return Time</label>
+          <input type="time" id="return-time" required
+            class="w-full border border-gray-300 rounded-lg px-4 py-3 text-lg text-gray-900 focus:border-orange-500 focus:ring-1 focus:ring-orange-500" />
+        </div>
+
+        <div
+          class="bg-white p-4 rounded-md shadow-md border border-gray-200 mt-6 select-text text-gray-800 text-sm space-y-1">
+          <p class="font-semibold mb-2">Rental Summary</p>
+          <div class="flex justify-between"><span>Selected Bike:</span> <span id="summary-bike">-</span></div>
+          <div class="flex justify-between"><span>Rental Duration:</span> <span id="summary-duration">-</span></div>
+          <div class="flex justify-between"><span>Daily Rate:</span> <span id="summary-rate">-</span></div>
+          <div class="flex justify-between font-semibold text-orange-600"><span>Estimated Total:</span> <span
+              id="summary-total">$0.00</span></div>
+          <div class="text-gray-400 text-xs">Final price may vary based on add-ons and taxes</div>
+        </div>
+
+        <div class="flex justify-end mt-6 gap-3">
+          <button type="button" id="prev-btn-2"
+            class="bg-gray-300 text-gray-700 px-5 py-3 rounded-lg font-semibold hover:bg-gray-400 select-none">Previous</button>
+          <button type="submit" id="next-btn-2"
+            class="bg-orange-500 hover:bg-orange-600 text-white px-6 py-3 rounded-lg font-semibold select-none">Next
+            Step</button>
+        </div>
+      </form>
+    </section>
+
+    <!-- Step 3: Your Details -->
+    <section class="step hidden" data-step="3" aria-label="Your Details" tabindex="0">
+      <h2 class="text-2xl font-semibold mb-6">Your Details</h2>
+      <form id="details-form" class="space-y-6">
+        <div>
+          <label for="full-name" class="block mb-1 font-medium">Full Name</label>
+          <input type="text" id="full-name" placeholder="Enter your full name" required
+            class="w-full border border-yellow-500 rounded-lg px-4 py-3 text-lg text-gray-900 focus:outline-none focus:ring-2 focus:ring-yellow-500" />
+        </div>
+        <div>
+          <label for="email" class="block mb-1 font-medium">Email Address</label>
+          <input type="email" id="email" placeholder="Enter your email" required
+            class="w-full border border-gray-300 rounded-lg px-4 py-3 text-lg text-gray-900 focus:outline-none focus:ring-1 focus:ring-orange-500" />
+        </div>
+        <div>
+          <label for="phone" class="block mb-1 font-medium">Phone Number</label>
+          <input type="tel" id="phone" placeholder="Enter your phone number" required
+            class="w-full border border-gray-300 rounded-lg px-4 py-3 text-lg text-gray-900 focus:outline-none focus:ring-1 focus:ring-orange-500" />
+        </div>
+        <div>
+          <label for="license-number" class="block mb-1 font-medium">Driver's License Number</label>
+          <input type="text" id="license-number" placeholder="Enter your license number" required
+            class="w-full border border-gray-300 rounded-lg px-4 py-3 text-lg text-gray-900 focus:outline-none focus:ring-1 focus:ring-orange-500" />
+        </div>
+        <div>
+          <label for="license-expiry" class="block mb-1 font-medium">License Expiry Date</label>
+          <input type="date" id="license-expiry" required
+            class="w-full border border-gray-300 rounded-lg px-4 py-3 text-lg text-gray-900 focus:outline-none focus:ring-1 focus:ring-orange-500" />
+        </div>
+
+        <div>
+          <label for="upload-license" class="block mb-2 font-medium">Upload License Photo</label>
+          <label for="upload-license-input"
+            class="cursor-pointer flex flex-col items-center justify-center border-2 border-dashed border-gray-400 rounded-lg p-6 text-center text-gray-500 hover:border-orange-500 hover:text-orange-600 transition select-none">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-10 h-10 mb-1" fill="none" viewBox="0 0 24 24"
+              stroke="currentColor" stroke-width="1.5" aria-hidden="true" focusable="false">
+              <path stroke-linecap="round" stroke-linejoin="round"
+                d="M4.5 12.75l6 6 9-13.5" />
+              <path stroke-linecap="round" stroke-linejoin="round"
+                d="M12 3v9m0 0l3-3m-3 3-3-3" />
+            </svg>
+            Click to upload or drag and drop<br />
+            <small class="text-gray-400">JPG, PNG or PDF (max. 5MB)</small><br />
+            <span class="text-orange-500 font-semibold mt-1">Upload File</span>
+          </label>
+          <input type="file" id="upload-license-input" accept=".jpg,.jpeg,.png,.pdf" class="hidden" required />
+        </div>
+
+        <div class="flex justify-between mt-6 gap-3">
+          <button type="button" id="prev-btn-3"
+            class="bg-gray-300 text-gray-700 px-5 py-3 rounded-lg font-semibold hover:bg-gray-400 select-none">Previous</button>
+          <button type="submit" id="next-btn-3"
+            class="bg-orange-500 hover:bg-orange-600 text-white px-6 py-3 rounded-lg font-semibold select-none">Next
+            Step</button>
+        </div>
+      </form>
+    </section>
+
+    <!-- Step 4: Add-ons & Extras -->
+    <section class="step hidden" data-step="4" aria-label="Add-ons and Extras" tabindex="0">
+      <h2 class="text-2xl font-semibold mb-6">Add-ons & Extras</h2>
+
+      <form id="addons-form" class="space-y-6">
+        <div class="bg-white p-4 rounded-md shadow-md border border-gray-200">
+          <p class="font-semibold mb-2">Insurance Options</p>
+          <label
+            class="custom-checkbox flex flex-col items-start mb-3 cursor-pointer group text-gray-900 font-semibold">
+            <input type="checkbox" name="insurance" value="basic" data-price="15" />
+            <div class="flex flex-col">
+              Basic Insurance
+              <span class="font-normal text-gray-500 text-sm max-w-[19rem]">Covers damages up to $1,000 with $500
+                deductible</span>
+              <span class="text-orange-500 font-semibold text-sm">+$15/day</span>
+            </div>
+          </label>
+          <label
+            class="custom-checkbox flex flex-col items-start mb-3 cursor-pointer group text-gray-900 font-semibold">
+            <input type="checkbox" name="insurance" value="premium" data-price="30" />
+            <div class="flex flex-col">
+              Premium Insurance
+              <span class="font-normal text-gray-500 text-sm max-w-[19rem]">Comprehensive coverage with $250
+                deductible</span>
+              <span class="text-orange-500 font-semibold text-sm">+$30/day</span>
+            </div>
+          </label>
+          <label
+            class="custom-checkbox flex flex-col items-start cursor-pointer group text-gray-900 font-semibold">
+            <input type="checkbox" name="insurance" value="full" data-price="45" />
+            <div class="flex flex-col">
+              Full Coverage
+              <span class="font-normal text-gray-500 text-sm max-w-[19rem]">Zero deductible, theft protection
+                included</span>
+              <span class="text-orange-500 font-semibold text-sm">+$45/day</span>
+            </div>
+          </label>
+        </div>
+
+        <div class="bg-white p-4 rounded-md shadow-md border border-gray-200">
+          <p class="font-semibold mb-2">Protective Gear</p>
+          <label
+            class="custom-checkbox flex flex-col items-start mb-3 cursor-pointer group text-gray-900 font-semibold">
+            <input type="checkbox" name="gear" value="helmet" data-price="10" />
+            <div class="flex flex-col">
+              Premium Helmet
+              <span class="font-normal text-gray-500 text-sm max-w-[19rem]">DOT & ECE certified full-face
+                helmet</span>
+              <span class="text-orange-500 font-semibold text-sm">+$10/day</span>
+            </div>
+          </label>
+          <label
+            class="custom-checkbox flex flex-col items-start mb-3 cursor-pointer group text-gray-900 font-semibold">
+            <input type="checkbox" name="gear" value="jacket" data-price="15" />
+            <div class="flex flex-col">
+              Riding Jacket
+              <span class="font-normal text-gray-500 text-sm max-w-[19rem]">Armored jacket with weather
+                protection</span>
+              <span class="text-orange-500 font-semibold text-sm">+$15/day</span>
+            </div>
+          </label>
+          <label
+            class="custom-checkbox flex flex-col items-start cursor-pointer group text-gray-900 font-semibold">
+            <input type="checkbox" name="gear" value="gloves" data-price="8" />
+            <div class="flex flex-col">
+              Riding Gloves
+              <span class="font-normal text-gray-500 text-sm max-w-[19rem]">Protective gloves with knuckle
+                protection</span>
+              <span class="text-orange-500 font-semibold text-sm">+$8/day</span>
+            </div>
+          </label>
+        </div>
+
+        <div class="bg-white p-4 rounded-md shadow-md border border-gray-200">
+          <p class="font-semibold mb-2">Additional Services</p>
+          <label
+            class="custom-checkbox flex flex-col items-start mb-3 cursor-pointer group text-gray-900 font-semibold">
+            <input type="checkbox" name="services" value="delivery" data-price="25" data-type="one-time" />
+            <div class="flex flex-col">
+              Bike Delivery
+              <span class="font-normal text-gray-500 text-sm max-w-[19rem]">Delivery to your location within city
+                limits</span>
+              <span class="text-orange-500 font-semibold text-sm">+$25 <span class="font-normal">(one-time)</span></span>
+            </div>
+          </label>
+          <label
+            class="custom-checkbox flex flex-col items-start mb-3 cursor-pointer group text-gray-900 font-semibold">
+            <input type="checkbox" name="services" value="pickup" data-price="25" data-type="one-time" />
+            <div class="flex flex-col">
+              Bike Pickup
+              <span class="font-normal text-gray-500 text-sm max-w-[19rem]">We'll pick up the bike from your
+                location</span>
+              <span class="text-orange-500 font-semibold text-sm">+$25 <span class="font-normal">(one-time)</span></span>
+            </div>
+          </label>
+          <label
+            class="custom-checkbox flex flex-col items-start cursor-pointer group text-gray-900 font-semibold">
+            <input type="checkbox" name="services" value="gopro" data-price="20" />
+            <div class="flex flex-col">
+              GoPro Rental
+              <span class="font-normal text-gray-500 text-sm max-w-[19rem]">Capture your ride with a mounted GoPro</span>
+              <span class="text-orange-500 font-semibold text-sm">+$20/day</span>
+            </div>
+          </label>
+        </div>
+
+        <div class="flex justify-between mt-6 gap-3">
+          <button type="button" id="prev-btn-4"
+            class="bg-gray-300 text-gray-700 px-5 py-3 rounded-lg font-semibold hover:bg-gray-400 select-none">Previous</button>
+          <button type="submit" id="next-btn-4"
+            class="bg-orange-500 hover:bg-orange-600 text-white px-6 py-3 rounded-lg font-semibold select-none">Next
+            Step</button>
+        </div>
+
+      </form>
+    </section>
+
+    <!-- Step 5: Payment & Summary -->
+    <section class="step hidden" data-step="5" aria-label="Payment and Summary" tabindex="0">
+      <h2 class="text-2xl font-semibold mb-6">Payment &amp; Summary</h2>
+
+      <section
+        class="bg-white p-4 rounded-md shadow-md border border-gray-200 select-text text-gray-800 text-sm space-y-2 mb-6">
+        <p class="font-semibold mb-2">Order Summary</p>
+        <div class="flex justify-between"><span>Selected Bike:</span> <span id="payment-bike">-</span></div>
+        <div class="flex justify-between"><span>Rental Period:</span> <span id="payment-period">-</span></div>
+        <div class="flex justify-between"><span>Bike Rental:</span> <span id="payment-rental">$0.00</span></div>
+        <div id="payment-addons" class="space-y-1">
+          <p class="font-semibold">Add-ons:</p>
+          <p class="flex justify-between"><span>None</span><span>$0.00</span></p>
+        </div>
+        <div class="flex justify-between font-semibold text-lg mt-2">
+          <span>Subtotal:</span>
+          <span id="payment-subtotal">$0.00</span>
+        </div>
+        <div class="flex justify-between font-semibold text-lg">
+          <span>Tax (8%):</span>
+          <span id="payment-tax">$0.00</span>
+        </div>
+        <div class="flex justify-between font-bold text-xl text-orange-600 mt-3">
+          <span>Total:</span>
+          <span id="payment-total">$0.00</span>
+        </div>
+      </section>
+
+      <form id="payment-form" class="space-y-6">
+
+        <fieldset class="bg-white p-4 rounded-md shadow-md border border-gray-200">
+          <legend class="font-semibold text-lg mb-4">Payment Method</legend>
+
+          <label class="custom-radio flex items-center cursor-pointer mb-3 select-none">
+            <input type="radio" name="payment" value="card" checked />
+            <img src="https://placehold.co/24x16?text=CC" alt="Credit/Debit Card icon" class="mr-2" />
+            Credit/Debit Card
+          </label>
+
+          <label class="custom-radio flex items-center cursor-pointer mb-3 select-none">
+            <input type="radio" name="payment" value="paypal" />
+            <img src="https://placehold.co/24x16?text=PP" alt="PayPal icon" class="mr-2" />
+            PayPal
+          </label>
+
+          <label class="custom-radio flex items-center cursor-pointer select-none">
+            <input type="radio" name="payment" value="applepay" />
+            <img src="https://placehold.co/24x16?text=" alt="Apple Pay icon" class="mr-2" />
+            Apple Pay
+          </label>
+        </fieldset>
+
+        <label ckbox flex flex-col items-start mb-3 cursor-pointer group text-gray-900 font-semibold">
+            <input type="checkbox" name="insurance" value="premium" data-price="30" />
+            <div class="flex flex-col">
+              Premium Insurance
+              <span class="font-normal text-gray-500 text-sm max-w-[19rem]">Comprehensive coverage with $250
+                deductible</span>
+              <span class="text-orange-500 font-semibold text-sm">+$30/day</span>
+            </div>
+          </label>
+          <label
+            class="custom-checkbox flex flex-col items-start cursor-pointer group text-gray-900 font-semibold">
+            <input type="checkbox" name="insurance" value="full" data-price="45" />
+            <div class="flex flex-col">
+              Full Coverage
+              <span class="font-normal text-gray-500 text-sm max-w-[19rem]">Zero deductible, theft protection
+                included</span>
+              <span class="text-orange-500 font-semibold text-sm">+$45/day</span>
+            </div>
+          </label>
+        </div>
+
+        <div class="bg-white p-4 rounded-md shadow-md border border-gray-200">
+          <p class="font-semibold mb-2">Protective Gear</p>
+          <label
+            class="custom-checkbox flex flex-col items-start mb-3 cursor-pointer group text-gray-900 font-semibold">
+            <input type="checkbox" name="gear" value="helmet" data-price="10" />
+            <div class="flex flex-col">
+              Premium Helmet
+              <span class="font-normal text-gray-500 text-sm max-w-[19rem]">DOT & ECE certified full-face
+                helmet</span>
+              <span class="text-orange-500 font-semibold text-sm">+$10/day</span>
+            </div>
+          </label>
+          <label
+            class="custom-checkbox flex flex-col items-start mb-3 cursor-pointer group text-gray-900 font-semibold">
+            <input type="checkbox" name="gear" value="jacket" data-price="15" />
+            <div class="flex flex-col">
+              Riding Jacket
+              <span class="font-normal text-gray-500 text-sm max-w-[19rem]">Armored jacket with weather
+                protection</span>
+              <span class="text-orange-500 font-semibold text-sm">+$15/day</span>
+            </div>
+          </label>
+          <label
+            class="custom-checkbox flex flex-col items-start cursor-pointer group text-gray-900 font-semibold">
+            <input type="checkbox" name="gear" value="gloves" data-price="8" />
+            <div class="flex flex-col">
+              Riding Gloves
+              <span class="font-normal text-gray-500 text-sm max-w-[19rem]">Protective gloves with knuckle
+                protection</span>
+              <span class="text-orange-500 font-semibold text-sm">+$8/day</span>
+            </div>
+          </label>
+        </div>
+
+        <div class="bg-white p-4 rounded-md shadow-md border border-gray-200">
+          <p class="font-semibold mb-2">Additional Services</p>
+          <label
+            class="custom-checkbox flex flex-col items-start mb-3 cursor-pointer group text-gray-900 font-semibold">
+            <input type="checkbox" name="services" value="delivery" data-price="25" data-type="one-time" />
+            <div class="flex flex-col">
+              Bike Delivery
+              <span class="font-normal text-gray-500 text-sm max-w-[19rem]">Delivery to your location within city
+                limits</span>
+              <span class="text-orange-500 font-semibold text-sm">+$25 <span class="font-normal">(one-time)</span></span>
+            </div>
+          </label>
+          <label
+            class="custom-checkbox flex flex-col items-start mb-3 cursor-pointer group text-gray-900 font-semibold">
+            <input type="checkbox" name="services" value="pickup" data-price="25" data-type="one-time" />
+            <div class="flex flex-col">
+              Bike Pickup
+              <span class="font-normal text-gray-500 text-sm max-w-[19rem]">We'll pick up the bike from your
+                location</span>
+              <span class="text-orange-500 font-semibold text-sm">+$25 <span class="font-normal">(one-time)</span></span>
+            </div>
+          </label>
+          <label
+            class="custom-checkbox flex flex-col items-start cursor-pointer group text-gray-900 font-semibold">
+            <input type="checkbox" name="services" value="gopro" data-price="20" />
+            <div class="flex flex-col">
+              GoPro Rental
+              <span class="font-normal text-gray-500 text-sm max-w-[19rem]">Capture your ride with a mounted GoPro</span>
+              <span class="text-orange-500 font-semibold text-sm">+$20/day</span>
+            </div>
+          </label>
+        </div>
+
+        <div class="flex justify-between mt-6 gap-3">
+          <button type="button" id="prev-btn-4"
+            class="bg-gray-300 text-gray-700 px-5 py-3 rounded-lg font-semibold hover:bg-gray-400 select-none">Previous</button>
+          <button type="submit" id="next-btn-4"
+            class="bg-orange-500 hover:bg-orange-600 text-white px-6 py-3 rounded-lg font-semibold select-none">Next
+            Step</button>
+        </div>
+
+      </form>
+    </section>
+
+    <!-- Step 5: Payment & Summary -->
+    <section class="step hidden" data-step="5" aria-label="Payment and Summary" tabindex="0">
+      <h2 class="text-2xl font-semibold mb-6">Payment & Summary</h2>
+
+      <section
+        class="bg-white p-4 rounded-md shadow-md border border-gray-200 select-text text-gray-800 text-sm space-y-2 mb-6">
+        <p class="font-semibold mb-2">Order Summary</p>
+        <div class="flex justify-between"><span>Selected Bike:</span> <span id="payment-bike">-</span></div>
+        <div class="flex justify-between"><span>Rental Period:</span> <span id="payment-period">-</span></div>
+        <div class="flex justify-between"><span>Bike Rental:</span> <span id="payment-rental">$0.00</span></div>
+        <div id="payment-addons" class="space-y-1">
+          <p class="font-semibold">Add-ons:</p>
+          <p class="flex justify-between"><span>None</span><span>$0.00</span></p>
+        </div>
+        <div class="flex justify-between font-semibold text-lg mt-2">
+          <span>Subtotal:</span>
+          <span id="payment-subtotal">$0.00</span>
+        </div>
+        <div class="flex justify-between font-semibold text-lg">
+          <span>Tax (8%):</span>
+          <span id="payment-tax">$0.00</span>
+        </div>
+        <div class="flex justify-between font-bold text-xl text-orange-600 mt-3">
+          <span>Total:</span>
+          <span id="payment-total">$0.00</span>
+        </div>
+      </section>
+
+      <form id="payment-form" class="space-y-6">
+
+        <fieldset class="bg-white p-4 rounded-md shadow-md border border-gray-200">
+          <legend class="font-semibold text-lg mb-4">Payment Method</legend>
+
+          <label class="custom-radio flex items-center cursor-pointer mb-3 select-none">
+            <input type="radio" name="payment" value="card" checked />
+            <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/b5764e9f-d546-42a7-b233-74646ba23040.png" alt="Credit/Debit Card icon" class="mr-2" />
+            Credit/Debit Card
+          </label>
+
+          <label class="custom-radio flex items-center cursor-pointer mb-3 select-none">
+            <input type="radio" name="payment" value="paypal" />
+            <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/cd6523ff-e69d-4d3b-9e4f-7ea8dc3a9f4d.png" alt="PayPal icon" class="mr-2" />
+            PayPal
+          </label>
+
+          <label class="custom-radio flex items-center cursor-pointer select-none">
+            <input type="radio" name="payment" value="applepay" />
+            <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/934a9cb4-9cfa-48f5-a787-becceeedd950.png" alt="Apple Pay icon" class="mr-2" />
+            Apple Pay
+          </label>
+        </fieldset>
+
+        <label for="agree" class="custom-checkbox flex items-start cursor-pointer select-none">
+          <input type="checkbox" id="agree" required />
+          <span class="ml-2 text-gray-900 text-sm max-w-[24rem]">I agree to the
+            <a href="#" class="text-orange-500 hover:underline">Terms & Conditions</a> and
+            <a href="#" class="text-orange-500 hover:underline">Rental Policy</a></span>
+        </label>
+<button type="submit" id="submit-btn" class="bg-orange-500 hover:bg-orange-600 text-white px-6 py-3 rounded-lg font-semibold select-none"><a style="font-decration:none;" href="confirmation icon.html"> confirmation booking</a></button>
+      
+
+        <div class="flex justify-between mt-6 gap-3">
+          <button type="button" id="prev-btn-5"
+            class="bg-gray-300 text-gray-700 px-5 py-3 rounded-lg font-semibold hover:bg-gray-400 select-none">Previous</button>
+          <button type="submit" id="submit-btn" class="bg-orange-500 hover:bg-orange-600 text-white px-6 py-3 rounded-lg font-semibold select-none"><a style="font-decration:none;" href="confirmation icon.html"></a></button>
+        </div>
+      </form>
+    </section>
+   
+  </main>
+
+  <script>
+    // Bike data with placeholder images + alt text
+    const bikes = [
+      {
+        id: 'yamaha-r15',
+        name: 'Yamaha R15',
+        specs: ['155cc', '19.3 HP', '150 km/h'],
+        rate: 45,
+        image: 'images.jpeg',
+        alt: 'Black Yamaha R15 sport motorcycle side view on white background',
+        available: true
+      },
+      {
+        id: 'kawasaki-ninja-h2r',
+        name: 'Kawasaki Ninja H2R',
+        specs: ['998cc', '310 HP', '400 km/h'],
+        rate: 299,
+        image: 'https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/49e9678a-130e-4eb0-ac19-912f298765f7.png',
+        alt: 'Bright green Kawasaki Ninja H2R bike side view isolated on white background',
+        available: true
+      },
+      {
+        id: 'ducati-panigale-v4',
+        name: 'Ducati Panigale V4',
+        specs: ['1103cc', '214 HP', '299 km/h'],
+        rate: 199,
+        image: 'https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/781b5151-6bff-40a5-9ec6-97f830b14405.png',
+        alt: 'Red Ducati Panigale V4 motorcycle side profile with white background',
+        available: true
+      },
+      {
+        id: 'bmw-s1000rr',
+        name: 'BMW S1000RR',
+        specs: ['999cc', '205 HP', '305 km/h'],
+        rate: 249,
+        image: 'https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/833a0b90-2cce-4bc3-9b3b-5fba59f36079.png',
+        alt: 'Black BMW S1000RR motorbike side view on white background',
+        available: true
+      },
+      {
+        id: 'honda-cbr650r',
+        name: 'Honda CBR650R',
+        specs: ['649cc', '94 HP', '225 km/h'],
+        rate: 120,
+        image: 'https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/47ddd064-cde2-461b-b6fd-dcc752f8e079.png',
+        alt: 'Black Honda CBR650R motorcycle side profile on white background',
+        available: true
+      }
+    ];
+
+    let currentStep = 1;
+    const totalSteps = 5;
+
+    // State
+    const state = {
+      selectedBike: null,
+      pickupDate: null,
+      pickupTime: null,
+      returnDate: null,
+      returnTime: null,
+      fullName: '',
+      email: '',
+      phone: '',
+      licenseNumber: '',
+      licenseExpiry: '',
+      licenseFile: null,
+      addons: [],
+      paymentMethod: 'card',
+      agreedToTerms: false,
+    };
+
+    // Elements
+    const steps = document.querySelectorAll('section.step');
+    const progressNav = document.getElementById('progress-nav');
+    const stepCounter = document.getElementById('step-counter');
+    const progressBar = document.getElementById('progress-bar');
+
+    // Initialize progress nav circles
+    function initProgressNav() {
+      progressNav.innerHTML = '';
+      for (let i = 1; i <= totalSteps; i++) {
+        const circle = document.createElement('button');
+        circle.setAttribute('type', 'button');
+        circle.setAttribute('aria-label', `Step ${i}`);
+        circle.className = 'circle';
+        circle.textContent = i;
+        circle.addEventListener('click', () => goToStep(i));
+        progressNav.appendChild(circle);
+      }
+      updateProgressNav();
+    }
+
+    function updateProgressNav() {
+      const circles = progressNav.querySelectorAll('.circle');
+      circles.forEach((c, i) => {
+        c.classList.remove('active', 'completed');
+        if (i + 1 < currentStep) c.classList.add('completed');
+        else if (i + 1 === currentStep) c.classList.add('active');
+      });
+    }
+
+    // Show current step, hide others
+    function showStep(n) {
+      steps.forEach(step => step.classList.add('hidden'));
+      const current = document.querySelector(`section.step[data-step="${n}"]`);
+      if (current) {
+        current.classList.remove('hidden');
+        current.focus();
+        stepCounter.textContent = `Step ${n}/${totalSteps}`;
+        progressBar.style.width = `${(n / totalSteps) * 100}%`;
+      }
+      updateProgressNav();
+    }
+
+    function goToStep(n) {
+      if (n < 1 || n > totalSteps) return;
+      currentStep = n;
+      showStep(n);
+      updateButtons();
+    }
+
+    // Populate bike list for step 1
+    function renderBikeList() {
+      const bikeList = document.getElementById('bike-list');
+      bikeList.innerHTML = '';
+
+      bikes.forEach(bike => {
+        const container = document.createElement('div');
+        container.className = [
+          'flex',
+          'items-center',
+          'gap-4',
+          'p-4',
+          'bg-white',
+          'rounded-lg',
+          'shadow',
+          'cursor-pointer',
+          'transition-shadow',
+          'hover:shadow-lg',
+          'select-none',
+          'relative'
+        ].join(' ');
+
+        if (state.selectedBike === bike.id) {
+          container.classList.add('border-2', 'border-orange-500');
+        } else {
+          container.classList.add('border', 'border-transparent');
+        }
+
+        container.setAttribute('tabindex', '0');
+        container.setAttribute('role', 'button');
+        container.setAttribute('aria-pressed', state.selectedBike === bike.id ? 'true' : 'false');
+
+        // image
+        const imgWrapper = document.createElement('div');
+        imgWrapper.className = 'flex-shrink-0 w-28 h-16 overflow-hidden rounded-md bg-gray-50 flex items-center justify-center';
+        const img = document.createElement('img');
+        img.src = bike.image;
+        img.alt = bike.alt;
+        img.loading = "lazy";
+        img.className = "object-contain max-h-full max-w-full";
+        img.onerror = () => {
+          img.src = "https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/fd5eb2ab-89e0-4d02-9c92-7437d5784fe9.png";
+        };
+        imgWrapper.appendChild(img);
+
+        // info block
+        const info = document.createElement('div');
+        info.className = 'flex flex-col flex-grow justify-between';
+
+        const titleRow = document.createElement('div');
+        titleRow.className = 'text-lg font-semibold truncate';
+        titleRow.textContent = bike.name;
+
+        const specsRow = document.createElement('div');
+        specsRow.className = 'flex gap-6 mt-1 text-gray-600 text-sm select-text';
+        bike.specs.forEach(spec => {
+          const sp = document.createElement('span');
+          sp.textContent = spec;
+          specsRow.appendChild(sp);
+        });
+
+        const priceRow = document.createElement('div');
+        priceRow.className =
+          'mt-2 flex justify-between items-center text-orange-600 font-bold text-lg select-text';
+
+        const priceSpan = document.createElement('span');
+        priceSpan.textContent = `$${bike.rate}/day`;
+        priceRow.appendChild(priceSpan);
+
+        const availSpan = document.createElement('span');
+        availSpan.textContent = 'Available';
+        availSpan.className = 'text-gray-500 text-sm font-normal select-text';
+        priceRow.appendChild(availSpan);
+
+        info.appendChild(titleRow);
+        info.appendChild(specsRow);
+        info.appendChild(priceRow);
+
+        container.appendChild(imgWrapper);
+        container.appendChild(info);
+
+        // Select bike event
+        container.addEventListener('click', () => {
+          state.selectedBike = bike.id;
+          // update UI, enable next button
+          renderBikeList();
+          updateButtons();
+        });
+        container.addEventListener('keydown', e => {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            container.click();
+          }
+        });
+
+        bikeList.appendChild(container);
+      });
+    }
+
+    // Update buttons state based on form completeness
+    function updateButtons() {
+      // Step 1
+      const nextBtn1 = document.getElementById('next-btn-1');
+      nextBtn1.disabled = !state.selectedBike;
+
+      // Step 2
+      const pickupDate = document.getElementById('pickup-date').value;
+      const pickupTime = document.getElementById('pickup-time').value;
+      const returnDate = document.getElementById('return-date').value;
+      const returnTime = document.getElementById('return-time').value;
+      const nextBtn2 = document.getElementById('next-btn-2');
+      if (pickupDate && pickupTime && returnDate && returnTime && isValidDateTimeRange(pickupDate, pickupTime, returnDate, returnTime)) {
+        nextBtn2.disabled = false;
+      } else {
+        nextBtn2.disabled = true;
+      }
+
+      // Step 3
+      const fullName = document.getElementById('full-name').value.trim();
+      const email = document.getElementById('email').value.trim();
+      const phone = document.getElementById('phone').value.trim();
+      const licenseNum = document.getElementById('license-number').value.trim();
+      const licenseExpiry = document.getElementById('license-expiry').value;
+      const licenseFile = document.getElementById('upload-license-input').files.length > 0;
+      const nextBtn3 = document.getElementById('next-btn-3');
+
+      if (fullName && email && phone && licenseNum && licenseExpiry && licenseFile) {
+        nextBtn3.disabled = false;
+      } else {
+        nextBtn3.disabled = true;
+      }
+
+      // Step 4: no mandatory
+
+      // Step 5: Final submit requires terms agreement
+      const agreeCheckbox = document.getElementById('agree');
+      const submitBtn = document.getElementById('submit-btn');
+      submitBtn.disabled = !agreeCheckbox.checked;
+    }
+
+    // Validate pickup-return is in logical order
+    function isValidDateTimeRange(pickupDate, pickupTime, returnDate, returnTime) {
+      const pickup = new Date(pickupDate + 'T' + pickupTime);
+      const ret = new Date(returnDate + 'T' + returnTime);
+      return pickup < ret;
+    }
+
+    // Event listeners for forms and inputs
+    function attachEventListeners() {
+      // Step 1
+      document.getElementById('next-btn-1').addEventListener('click', () => {
+        if (state.selectedBike) {
+          goToStep(2);
+          updateSummary2();
+        }
+      });
+
+      // Step 2
+      const datesForm = document.getElementById('dates-form');
+      ['pickup-date', 'pickup-time', 'return-date', 'return-time'].forEach(id => {
+        document.getElementById(id).addEventListener('input', () => {
+          updateButtons();
+          updateSummary2();
+        });
+      });
+      datesForm.addEventListener('submit', e => {
+        e.preventDefault();
+        if (!isValidDateTimeRange(document.getElementById('pickup-date').value, document.getElementById('pickup-time').value,
+          document.getElementById('return-date').value, document.getElementById('return-time').value)) {
+          alert('Return date & time must be after pickup.');
+          return;
+        }
+        goToStep(3);
+        updateButtons();
+      });
+      document.getElementById('prev-btn-2').addEventListener('click', () => {
+        goToStep(1);
+        updateButtons();
+      });
+
+document.getElementById('payment-bike').textContent = bike.name;
+      document.getElementById('payment-period').textContent = `${pDateStr} - ${rDateStr} (${durationDays} ${durationDays === 1 ? 'day' : 'days'})`;
+      document.getElementById('payment-rental').textContent = `$${bikeRentalTotal.toFixed(2)} ($${bike.rate}/day Ã— ${durationDays} ${durationDays === 1 ? 'day' : 'days'})`;
+      document.getElementById('payment-subtotal').textContent = `$${subtotal.toFixed(2)}`;
+      document.getElementById('payment-tax').textContent = `$${tax.toFixed(2)}`;
+      document.getElementById('payment-total').textContent = `$${total.toFixed(2)}`;
+    }
+
+    // Initialization
+    function init() {
+      renderBikeList();
+      initProgressNav();
+      attachEventListeners();
+
+      // Set min dates for date inputs on step 2 & 3
+      const todayISO = new Date().toISOString().split('T')[0];
+      ['pickup-date', 'return-date', 'license-expiry'].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) {
+          el.min = todayISO;
+        }
+      });
+
+      // Set default dates for pickup and return (step 2)
+      const pickupDate = document.getElementById('pickup-date');
+      const returnDate = document.getElementById('return-date');
+      const now = new Date();
+      const todayStr = now.toISOString().split('T')[0];
+      pickupDate.value = todayStr;
+      returnDate.value = new Date(now.getTime() + 24 * 60 * 60 * 1000).toISOString().split('T')[0];
+
+      // Default times
+      document.getElementById('pickup-time').value = "10:00";
+      document.getElementById('return-time').value = "10:00";
+
+      showStep(currentStep);
+      updateButtons();
+      updateSummary2();
+    }
+
+    init();
+
+  </script>
+</body>
+
+</html>

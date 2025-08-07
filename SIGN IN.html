@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+ <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+ <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+      
+     <link rel="stylesheet" href="styles.css" />
+     <link rel="stylesheet" href="css bike.css">
+     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+     <link rel="stylesheet" href="hi.css" /> 
+     <link rel="stylesheet" href="quick booking.css" /> 
+      <script src="https://cdn.tailwindcss.com"></script>
+<style>
+    /* Custom scrollbar for dark theme */
+    ::-webkit-scrollbar {
+      width: 8px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #1a1a1a;
+    }
+    ::-webkit-scrollbar-thumb {
+      background-color: #6b21a8;
+      border-radius: 4px;
+    }
+    /* Smooth transitions */
+    button:focus, input:focus {
+      outline: 2px solid #a78bfa;
+      outline-offset: 2px;
+    }
+  </style>
+</head>
+<body>
+  
+  
+ <header>
+      <div class="logo"><img src="IMG-20250611-WA0020.jpg" class="logoimg">SKY BIKE</div>
+      <label for="sidebar-toggle" class="menu-toggle-label" aria-label="Open menu"> 
+       <i class="fa-solid fa-bars"></i>
+ </label>
+
+    </header>
+
+    <input type="checkbox" id="sidebar-toggle">
+
+    <div class="sidebar">
+      <label for="sidebar-toggle" class="closebtn"><i class="fa-solid fa-circle-xmark"></i></label> 
+      <ul class="menu">
+        <li><a href="sky bike.html"><div class="ghh"><i class="fa-solid fa-house"></i> HOME</div></a></li>
+        <li><a href="bike.html"><div class="ghh"><i class="fa-solid fa-motorcycle"></i> BIKE</div></a></li>
+        <li><a href="booking.html"><div class="ghh"><i class="fa-solid fa-book"></i> BOOKING</div></a></li>
+        <li><a href="contact.html"><div class="ghh"> <i class="fa-solid fa-address-book"></i> CONTACT</div></a></li>
+        <li><a href="about.html"><div class="ghh"><i class="fa-solid fa-address-card"></i> ABOUT</div></a></li>
+        <li class="signup"><a href="login.html"><div class="ghh"><i class="fa-solid fa-right-to-bracket"></i> LOGIN</div></a></li>
+      </ul>
+    </div>
+   <br><br>
+
+      <div class="content" id="m-content">
+             <h1 style="color:white;">SIGN UP</h1>
+ 
+          
+      </div>
+          
+   <div class="max-w-6xl w-full bg-[#121212] rounded-2xl shadow-xl overflow-hidden grid grid-cols-1 md:grid-cols-2">
+    <!-- Left Panel -->
+    <div class="p-10 flex flex-col justify-center gap-8 bg-gradient-to-tr from-purple-900 via-purple-700 to-purple-900 rounded-t-2xl md:rounded-l-2xl md:rounded-tr-none">
+      <div class="flex flex-col items-center text-center space-y-6">
+        <div class="relative w-48 h-56 rounded-2xl bg-gradient-to-tr from-purple-700 to-purple-900 shadow-lg shadow-purple-900/70 flex items-center justify-center">
+          <img 
+            src="Yamaha-FZ-X-Review-44 (1) (1).jpg" 
+            alt="Purple gradient box with rounded corners and smooth blending shades" 
+            class="w-full h-full object-cover rounded-2xl" 
+            onerror="this.style.display='none';"
+          />
+          <img src="">
+          <!-- The gradient box is main background if the image fails -->
+        </div>
+        <h2 class="text-2xl font-semibold">Get Started with Us</h2>
+        <p class="text-purple-300 max-w-xs">
+          Complete three easy steps to sign up your account
+        </p>
+      </div>
+      
+      <form class="flex flex-col gap-3 max-w-xs mx-auto w-full">
+        <label class="inline-flex items-center gap-3 cursor-pointer text-purple-200">
+          <input type="radio" name="signup-method" value="email" checked class="accent-purple-500" />
+          Sign up via email
+        </label>
+        <label class="inline-flex items-center gap-3 cursor-pointer text-purple-400 hover:text-purple-200 transition-colors">
+          <input type="radio" name="signup-method" value="google" disabled class="accent-purple-400" />
+          Sign up with Google (Coming soon)
+        </label>
+        <label class="inline-flex items-center gap-3 cursor-pointer text-purple-400 hover:text-purple-200 transition-colors">
+          <input type="radio" name="signup-method" value="apple" disabled class="accent-purple-400" />
+          Sign up with Apple (Coming soon)
+        </label>
+      </form>
+    </div>
+
+    <!-- Right Panel -->
+    <div class="p-12 md:p-16 flex flex-col justify-center bg-[#111111] rounded-b-2xl md:rounded-r-2xl md:rounded-bl-none">
+      <h3 class="text-2xl font-semibold mb-6">Sign Up Account</h3>
+      <p class="text-gray-400 mb-8 max-w-sm">
+        Fill your personal details to create your account
+      </p>
+      
+      <form class="space-y-6 max-w-md">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div>
+            <label for="firstname" class="block text-gray-400 mb-1 text-sm">First Name</label>
+            <input type="text" id="firstname" name="firstname" placeholder="First Name" required
+              class="w-full rounded-md bg-[#222222] border border-gray-700 px-4 py-3 placeholder-gray-500 text-white focus:border-purple-600 focus:ring-1 focus:ring-purple-600" />
+          </div>
+          <div>
+            <label for="lastname" class="block text-gray-400 mb-1 text-sm">Last Name</label>
+            <input type="text" id="lastname" name="lastname" placeholder="Last Name" required
+              class="w-full rounded-md bg-[#222222] border border-gray-700 px-4 py-3 placeholder-gray-500 text-white focus:border-purple-600 focus:ring-1 focus:ring-purple-600" />
+          </div>
+        </div>
+
+        <div>
+          <label for="email" class="block text-gray-400 mb-1 text-sm">Email</label>
+          <input type="email" id="email" name="email" placeholder="example@mail.com" required
+            class="w-full rounded-md bg-[#222222] border border-gray-700 px-4 py-3 placeholder-gray-500 text-white focus:border-purple-600 focus:ring-1 focus:ring-purple-600" />
+        </div>
+
+        <div>
+          <label for="password" class="block text-gray-400 mb-1 text-sm">Password</label>
+          <input type="password" id="password" name="password" placeholder="Choose a strong password" required
+            class="w-full rounded-md bg-[#222222] border border-gray-700 px-4 py-3 placeholder-gray-500 text-white focus:border-purple-600 focus:ring-1 focus:ring-purple-600" />
+        </div>
+
+        <div class="flex items-center text-gray-400 text-xs">
+          <input type="checkbox" id="terms" name="terms" required class="accent-purple-600 mr-2" />
+          <label for="terms">I agree to the terms and conditions</label>
+        </div>
+
+        <button type="submit" href="login.html" class="w-full bg-purple-700 hover:bg-purple-800 text-white py-3 rounded-md font-semibold transition-colors duration-200">
+                 <a href="booking.html" class="text-purple-600 hover:text-purple-400 font-semibold">Sign Up</a>
+        </button>
+      </form>
+
+      <p class="text-gray-500 text-center text-sm mt-8">
+        Already have your account? 
+        <a href="login.html" class="text-purple-600 hover:text-purple-400 font-semibold">Log In</a>
+      </p>
+    </div>
+  </div>
+  
+ 
+ 
+</body>
+</html>
